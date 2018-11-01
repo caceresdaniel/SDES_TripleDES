@@ -1,43 +1,30 @@
-public class SDES {
+public class TripleSDES {
 	public static void main(String[] args) {
-		byte[] key = { 1, 1, 1, 0, 0, 0, 1, 1, 1, 0 };
-		byte[] key2 = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		byte[] key3 = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-		byte[] data = { 1, 0, 1, 0, 1, 0, 1, 0 };
-		byte[] data2 = { 0, 1, 0, 1, 0, 1, 0, 1 };
 
-		byte[] result = Encrypt(key2, data);
-		byte[] result1 = Encrypt(key, data);
-		byte[] result2 = Encrypt(key, data2);
-		byte[] result3 = Encrypt(key3, data);
-		printer(result);
-		printer(result1);
-		printer(result2);
-		printer(result3);
-
-		System.out.println("*****************End of Test Check*************************");
-		
-		System.out.println("*****************Start of Answers for Q's******************");
-
-		byte[] k = { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1 };
+		byte[] k1 = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		byte[] k2 = { 1, 0, 0, 0, 1, 0, 1, 1, 1, 0 };
-		byte[] k3 = { 0, 0, 1, 0, 0, 1, 1, 1, 1, 1 };
-		byte[] pt = {0,0,0,0,0,0,0,0};
-		byte[] pt1 = {1,1,1,1,1,1,1,1};
-		byte[] ct = { 0, 0, 0, 1, 1, 1, 0, 0 };
-		byte[] ct1 = { 1, 1, 0, 0, 0, 0, 1, 0 };
-		byte[] ct2 = { 1, 0, 0, 1, 1, 1, 0, 1 };
-		byte[] ct3 = { 1, 0, 0, 1, 0, 0, 0, 0 };
-		
-		byte[] r1 = Encrypt(key2, pt);
-		byte[] r2 = Encrypt(key3, pt1);
-		byte[] r3 = Encrypt(k, pt);
-		byte[] r4 = Encrypt(k, pt1);
-		byte[] r5 = Decrypt(k2, ct);
-		byte[] r6 = Decrypt(k2, ct1);
-		byte[] r7 = Decrypt(k3, ct2);
-		byte[] r8 = Decrypt(k3, ct3);
-		
+		byte[] k3 = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+		byte[] k4 = { 0, 1, 1, 0, 1, 0, 1, 1, 1, 0 };
+		byte[] k5 = { 1, 0, 1, 1, 1, 0, 1, 1, 1, 1 };
+		byte[] k6 = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+		byte[] pt1 = { 0, 0, 0, 0, 0, 0, 0, 0 };
+		byte[] pt2 = { 1, 1, 0, 1, 0, 1, 1, 1 };
+		byte[] pt3 = { 1, 0, 1, 0, 1, 0, 1, 0 };
+		byte[] ct1 = { 1, 1, 1, 0, 0, 1, 1, 0 };
+		byte[] ct2 = { 0, 1, 0, 1, 0, 0, 0, 0 };
+		byte[] ct3 = { 1, 0, 0, 0, 0, 0, 0, 0 };
+		byte[] ct4 = { 1, 0, 0, 1, 0, 0, 1, 0 };
+
+		byte[] r1 = Encrypt(k1, k1, pt1);
+		byte[] r2 = Encrypt(k2, k4, pt2);
+		byte[] r3 = Encrypt(k2, k4, pt3);
+		byte[] r4 = Encrypt(k3, k3, pt3);
+		byte[] r5 = Decrypt(k2, k2, ct1);
+		byte[] r6 = Decrypt(k5, k2, ct2);
+		byte[] r7 = Decrypt(k1, k1, ct3);
+		byte[] r8 = Decrypt(k6, k6, ct4);
+
+		System.out.println("*****************Start of Answers for Q's******************");
 		System.out.println("*****************CipherText Answers******************");
 		printer(r1);
 		printer(r2);
@@ -48,14 +35,26 @@ public class SDES {
 		printer(r6);
 		printer(r7);
 		printer(r8);
-		
+
+	}
+
+	// E3DES(p) = EDES(k1,DDES(k2,EDES(k1, p)))
+	public static byte[] Encrypt(byte[] rawkey1, byte[] rawkey2, byte[] plaintext) {
+		byte[] cipherText = NormalEncrypt(rawkey1, NormalDecrypt(rawkey2, NormalEncrypt(rawkey1, plaintext)));
+		return cipherText;
+	}
+
+	// D3DES(c) = DDES(k1,EDES(k2,DDES(k1, c)))
+	public static byte[] Decrypt(byte[] rawkey1, byte[] rawkey2, byte[] ciphertext) {
+		byte[] plainText = NormalDecrypt(rawkey1, NormalEncrypt(rawkey2, NormalDecrypt(rawkey1, ciphertext)));
+		return plainText;
 	}
 
 	// Created the 2 keys from the 10-bit key entered
 	// since the function I created combines the key I split it in half and get key
 	// 1 and key 2
 	// I then go down the order of functions necessary to encrypt
-	public static byte[] Encrypt(byte[] rawkey, byte[] plaintext) {
+	public static byte[] NormalEncrypt(byte[] rawkey, byte[] plaintext) {
 		byte[] k1 = new byte[8];
 		byte[] k2 = new byte[8];
 		byte[] combinedKeys = P10(rawkey);
@@ -77,7 +76,7 @@ public class SDES {
 	}
 
 	// Same as encryption but this time the steps are opposite to decrypt
-	public static byte[] Decrypt(byte[] rawkey, byte[] ciphertext) {
+	public static byte[] NormalDecrypt(byte[] rawkey, byte[] ciphertext) {
 		byte[] k1 = new byte[8];
 		byte[] k2 = new byte[8];
 		byte[] combinedKeys = P10(rawkey);
