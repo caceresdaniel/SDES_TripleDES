@@ -88,11 +88,11 @@ public class TripleSDES {
 			k2[i - 8] = combinedKeys[i];
 		}
 
-		byte[] inversePermutation = iIP(ciphertext);
+		byte[] inversePermutation = IP(ciphertext);
 		byte[] firstCall = fk(inversePermutation, k2);
 		byte[] switched = SwitchFunction(firstCall);
 		byte[] lastCall = fk(switched, k1);
-		byte[] plainText = IP(lastCall);
+		byte[] plainText = iIP(lastCall);
 		return plainText;
 	}
 

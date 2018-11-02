@@ -1,2 +1,6 @@
 /SDES.class
 /TripleSDES.class
+/CASCII.class
+/Conversion.class
+/BruteForceSDES.class
+/BruteForceTripleSDES.class

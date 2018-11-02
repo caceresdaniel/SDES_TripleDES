@@ -14,7 +14,18 @@ public class SDES {
 		printer(result1);
 		printer(result2);
 		printer(result3);
-
+		
+		System.out.println("testing this dumb shit properly");
+		printer(data);
+		byte[]res = Encrypt(key2, data);
+		printer(res);
+		byte[] f = Decrypt(key2, res);
+		printer(f);
+		
+		
+		System.out.println("testing this dumb shit properly");
+		
+		
 		System.out.println("*****************End of Test Check*************************");
 		
 		System.out.println("*****************Start of Answers for Q's******************");
@@ -89,11 +100,11 @@ public class SDES {
 			k2[i - 8] = combinedKeys[i];
 		}
 
-		byte[] inversePermutation = iIP(ciphertext);
+		byte[] inversePermutation = IP(ciphertext);
 		byte[] firstCall = fk(inversePermutation, k2);
 		byte[] switched = SwitchFunction(firstCall);
 		byte[] lastCall = fk(switched, k1);
-		byte[] plainText = IP(lastCall);
+		byte[] plainText = iIP(lastCall);
 		return plainText;
 	}
 
