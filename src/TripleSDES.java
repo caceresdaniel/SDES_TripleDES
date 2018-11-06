@@ -23,6 +23,7 @@ public class TripleSDES {
 		byte[] r6 = Decrypt(k5, k2, ct2);
 		byte[] r7 = Decrypt(k1, k1, ct3);
 		byte[] r8 = Decrypt(k6, k6, ct4);
+		
 
 		System.out.println("*****************Start of Answers for Q's******************");
 		System.out.println("*****************CipherText Answers******************");
@@ -35,7 +36,6 @@ public class TripleSDES {
 		printer(r6);
 		printer(r7);
 		printer(r8);
-
 	}
 
 	// E3DES(p) = EDES(k1,DDES(k2,EDES(k1, p)))

@@ -10,25 +10,6 @@ public class SDES {
 		byte[] result1 = Encrypt(key, data);
 		byte[] result2 = Encrypt(key, data2);
 		byte[] result3 = Encrypt(key3, data);
-		printer(result);
-		printer(result1);
-		printer(result2);
-		printer(result3);
-		
-		System.out.println("testing this dumb shit properly");
-		printer(data);
-		byte[]res = Encrypt(key2, data);
-		printer(res);
-		byte[] f = Decrypt(key2, res);
-		printer(f);
-		
-		
-		System.out.println("testing this dumb shit properly");
-		
-		
-		System.out.println("*****************End of Test Check*************************");
-		
-		System.out.println("*****************Start of Answers for Q's******************");
 
 		byte[] k = { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1 };
 		byte[] k2 = { 1, 0, 0, 0, 1, 0, 1, 1, 1, 0 };

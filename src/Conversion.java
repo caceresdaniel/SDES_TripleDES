@@ -13,11 +13,6 @@ public class Conversion extends CASCII {
 
 		byte[] te = SDESDecryptor(key, result);
 		
-		printer(te);
-		String asdf = toString(te);
-		System.out.println(asdf);
-		
-		// End of Problem 1 Part 3
 	}
 
 	// This method receives the plaintext which in this case is CRYPTOGARPHY which

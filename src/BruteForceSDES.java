@@ -6,7 +6,7 @@ public class BruteForceSDES extends CASCII {
 		byte[][] keys = keyGenerator();
 		
 		for(int i = 0; i < 1024; i++) {
-			System.out.print("Decyprtion run on key: ");
+			System.out.print("Decryption run on key: ");
 			printer(keys[i]);
 			byte[] result = SDESDecryptor(keys[i], msg1);
 			String plainText = toString(result);
